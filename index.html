@@ -485,7 +485,6 @@
                       gif.addFrame(canvas, {delay: 1000/10,copy:true});
 
                       progressNow+=1;
-                      console.log("AAA"+progressNow/(rub_length*2));
                       $("#gifProgress").css("width",progressNow/rub_length*100+"%");
                     });
 
@@ -495,7 +494,7 @@
                 }, 300);
               }
 
-              recordFrame(0,rub_length-1,function(){
+              recordFrame(0,rub_length,function(){
                 //生成新的gif
                 gif.on('finished', function(blob) {
                   $("#myModal").modal('hide');
