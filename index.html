@@ -29,15 +29,15 @@
   <body style="background-color:linear-gradient(white, #D3D8E8)">
 
     <div class="row navbar navbar-default"  style="height:82px;width:100%;background-color:rgba(60,163,83,1)">
-      <div class="container" style="width:960px;">
+      <div class="container" style="width:660px;">
         <div class="col-lg-4">
           <img src="./emoticonsay.png" height="40px" style="display:inline;margin-top:25px;margin-left:20px"/>
         </div>
         <div class="col-lg-8 container-fluid" >
           
             <ul class="nav navbar-nav navbar-left" style="margin-top:17px">
-              <li class="active"><a href="#" style="font-size:16px;font-weight:bold">Home</a></li>
-              <li><a href="about.html" style="font-size:16px;font-weight:bold;color:white">About</a></li>
+              <!-- <li class="active"><a href="#" style="font-size:16px;font-weight:bold">Home</a></li>
+              <li><a href="about.html" style="font-size:16px;font-weight:bold;color:white">About</a></li> -->
               <!--
               <li><a href="//www.facebook.com/pages/EmoticonSay/896348820430220" target="_blank" style="font-size:16px;font-weight:bold;color:white">Facebook</a></li> 
               -->
@@ -46,7 +46,7 @@
               --> 
             </ul>
 
-            <div class="nav navbar-nab navbar-right" style="margin-top:10px">
+            <div class="nav navbar-nab navbar-right" style="margin-top:35px">
               <a href="zh/index.html" style="color:white;">中文版</a>
             </div>
 
@@ -143,7 +143,9 @@
               </div>
 
               
-              <button id="download" class="btn btn-primary" style="margin-top:20px;background-color:rgba(60,163,83,1);border-color:rgba(60,163,83,1);">Download</button>
+              <button id="download" class="btn btn-primary" style="margin-top:20px;background-color:rgba(60,163,83,1);border-color:rgba(60,163,83,1);">Generate</button>
+
+              <a id="downloadBtn" target="_blank" class="btn btn-primary" style="margin-top:20px">Download</a>
 
             </div>
           </div>
@@ -292,8 +294,12 @@
           document.form1.picFile.click();
         });
         $("#upload_again").click(function(){
+          $("#download").show();
+          $("#downloadBtn").hide();
           document.form1.picFile.click();
         });
+
+        $("#downloadBtn").hide();
 
         //选择文件后，回显图片
         $("input[type='file']").change(function(){
@@ -502,9 +508,10 @@
               }
 
               recordFrame(0,rub_length,function(){
+                $("#myModal").modal('hide');
+
                 //生成新的gif
                 gif.on('finished', function(blob) {
-                  $("#myModal").modal('hide');
 
                   rub.play();
 
@@ -512,12 +519,17 @@
                   $("#result").css("border","1px solid rgba(60,163,83,1)");
 
                   //下载
-                  var aLink = document.createElement('a');
-                  var evt = document.createEvent("HTMLEvents");
-                  evt.initEvent("click", false, false);
-                  aLink.download = "EmoticonSay"+".gif";
-                  aLink.href = URL.createObjectURL(blob);
-                  aLink.dispatchEvent(evt);
+                  // var aLink = document.createElement('a');
+                  // var evt = document.createEvent("HTMLEvents");
+                  // evt.initEvent("click", false, false);
+                  // aLink.download = "EmoticonSay"+".gif";
+                  // aLink.href = URL.createObjectURL(blob);
+                  // aLink.dispatchEvent(evt);
+
+                  $("#downloadBtn").attr("download","EmoticonSay.gif")
+                  $("#downloadBtn").attr("href",URL.createObjectURL(blob))
+                  $("#download").hide();
+                  $("#downloadBtn").show();
                 });
 
                 gif.render();
@@ -535,12 +547,17 @@
           html2canvas($("#result")[0],{background: "#fff"}).then(function(canvas) {
               $("#result").css("border","1px solid rgba(60,163,83,1)");
 
-              var aLink = document.createElement('a');
-              var evt = document.createEvent("HTMLEvents");
-              evt.initEvent("click", false, false);
-              aLink.download = "EmoticonSay."+currentImageType.split("/")[1];
-              aLink.href = canvas.toDataURL(currentImageType);
-              aLink.dispatchEvent(evt);
+              // var aLink = document.createElement('a');
+              // var evt = document.createEvent("HTMLEvents");
+              // evt.initEvent("click", false, false);
+              // aLink.download = "EmoticonSay."+currentImageType.split("/")[1];
+              // aLink.href = canvas.toDataURL(currentImageType);
+              // aLink.dispatchEvent(evt);
+
+              $("#downloadBtn").attr("download","EmoticonSay."+currentImageType.split("/")[1])
+              $("#downloadBtn").attr("href",canvas.toDataURL(currentImageType))
+              $("#download").hide();
+              $("#downloadBtn").show();
           });
         });
         
