@@ -30,26 +30,12 @@
         </div>
 
 
-        <div class="col-lg-5" style="margin-top:10px;">
+        <div class="col-lg-5" style="margin-top:45px;">
           <a href="../index.html" style="color:white;margin-left:140px;">English Version</a>
           <br/><br/>
           
-          <!-- JiaThis Button BEGIN -->
-          <div class="jiathis_style_24x24" style="margin-left:20px">
-            <span class="jiathis_txt" style="color:white;font-size:15px">分享：</span>
-            <a class="jiathis_button_qzone"></a>
-            <a class="jiathis_button_tsina"></a>
-            <a class="jiathis_button_tqq"></a>
-            <a class="jiathis_button_weixin"></a>
-            <a class="jiathis_button_renren"></a>
-            <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-          </div>
-          <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
-          <!-- JiaThis Button END -->
         </div>
 
-
-        
       </div>
 
     </div>
@@ -141,6 +127,8 @@
 
               
               <button id="download" class="btn btn-primary" style="margin-top:20px;background-color:rgba(60,163,83,1);border-color:rgba(60,163,83,1);">生成图片</button>
+
+              <a id="downloadBtn" target="_blank" class="btn btn-primary" style="margin-top:20px">下载</a>
 
             </div>
           </div>
@@ -270,8 +258,12 @@
           document.form1.picFile.click();
         });
         $("#upload_again").click(function(){
+          $("#download").show();
+          $("#downloadBtn").hide();
           document.form1.picFile.click();
         });
+
+        $("#downloadBtn").hide();
 
         //选择文件后，回显图片
         $("input[type='file']").change(function(){
@@ -481,22 +473,28 @@
               }
 
               recordFrame(0,rub_length,function(){
+                $("#myModal").modal('hide');
+
                 //生成新的gif
                 gif.on('finished', function(blob) {
-                  $("#myModal").modal('hide');
-
+                
                   rub.play();
 
                   console.log("gif finished");
                   $("#result").css("border","1px solid rgba(60,163,83,1)");
 
                   //下载
-                  var aLink = document.createElement('a');
-                  var evt = document.createEvent("HTMLEvents");
-                  evt.initEvent("click", false, false);
-                  aLink.download = "EmoticonSay"+".gif";
-                  aLink.href = URL.createObjectURL(blob);
-                  aLink.dispatchEvent(evt);
+                  // var aLink = document.createElement('a');
+                  // var evt = document.createEvent("HTMLEvents");
+                  // evt.initEvent("click", false, false);
+                  // aLink.download = "EmoticonSay"+".gif";
+                  // aLink.href = URL.createObjectURL(blob);
+                  // aLink.dispatchEvent(evt);
+
+                  $("#downloadBtn").attr("download","EmoticonSay.gif")
+                  $("#downloadBtn").attr("href",URL.createObjectURL(blob))
+                  $("#download").hide();
+                  $("#downloadBtn").show();
                 });
 
                 gif.render();
@@ -514,12 +512,17 @@
           html2canvas($("#result")[0],{background: "#fff"}).then(function(canvas) {
               $("#result").css("border","1px solid rgba(60,163,83,1)");
 
-              var aLink = document.createElement('a');
-              var evt = document.createEvent("HTMLEvents");
-              evt.initEvent("click", false, false);
-              aLink.download = "EmoticonSay."+currentImageType.split("/")[1];
-              aLink.href = canvas.toDataURL(currentImageType);
-              aLink.dispatchEvent(evt);
+              // var aLink = document.createElement('a');
+              // var evt = document.createEvent("HTMLEvents");
+              // evt.initEvent("click", false, false);
+              // aLink.download = "EmoticonSay."+currentImageType.split("/")[1];
+              // aLink.href = canvas.toDataURL(currentImageType);
+              // aLink.dispatchEvent(evt);
+
+              $("#downloadBtn").attr("download","EmoticonSay."+currentImageType.split("/")[1])
+              $("#downloadBtn").attr("href",canvas.toDataURL(currentImageType))
+              $("#download").hide();
+              $("#downloadBtn").show();
           });
         });
         
